@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyFabia – Škoda Fabia II</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syncopate:wght@700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+        body {
+            background-color: #0d1117;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: #f0f6fc;
+        }
+        .font-logo-only {
+            font-family: 'Syncopate', sans-serif;
+            letter-spacing: -0.04em;
+        }
+        /* MyŠkoda Glass Blur efekt */
+        .glass-card {
+            background: rgba(22, 27, 34, 0.55);
+            backdrop-filter: blur(24px) saturate(130%);
+            -webkit-backdrop-filter: blur(24px) saturate(130%);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+        .glass-nav {
+            background: rgba(13, 17, 23, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .skoda-green-bg { background-color: #00b074; }
+        .skoda-glow {
+            box-shadow: 0 0 35px rgba(0, 176, 116, 0.12);
+        }
+        
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0d1117; }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00b074; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col lg:flex-row antialiased">
+
+    <aside class="w-full lg:w-64 glass-nav border-r border-slate-800/60 flex flex-col justify-between p-6 lg:fixed lg:h-screen z-50">
+        <div>
+            <div class="mb-10 px-2">
+                <p class="text-[9px] uppercase tracking-widest text-emerald-400 font-extrabold font-logo-only">CONNECT APP</p>
+                <h1 class="text-2xl font-black text-white tracking-tight mt-1 font-logo-only">MyFabia</h1>
+                <p class="text-[10px] text-slate-500 font-mono mt-1">EDITION 5J • 1.6 TDI</p>
+            </div>
+
+            <nav class="space-y-1.5">
+                <button onclick="switchPage('dashboard')" id="nav-dashboard" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition cursor-pointer text-white bg-emerald-500/10 border border-emerald-500/20 shadow-lg">
+                    <svg class="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V16zM14 16a2 2 0 012-2h2a2 2 0 012 2v4a2 2 0 01-2 2h-2a2 2 0 01-2-2V16z"></path></svg>
+                    Dashboard
+                </button>
+                <button onclick="switchPage('analytics')" id="nav-analytics" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition cursor-pointer text-slate-400 hover:text-white hover:bg-slate-800/40">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2"></path></svg>
+                    Statistiky &amp; Grafy
+                </button>
+                <button onclick="switchPage('service')" id="nav-service" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition cursor-pointer text-slate-400 hover:text-white hover:bg-slate-800/40">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    Servisní Historie
+                </button>
+                <button onclick="switchPage('specs')" id="nav-specs" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition cursor-pointer text-slate-400 hover:text-white hover:bg-slate-800/40">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Techn. Specifikace
+                </button>
+                <button onclick="switchPage('gallery')" id="nav-gallery" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition cursor-pointer text-slate-400 hover:text-white hover:bg-slate-800/40">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    Showroom &amp; Úpravy
+                </button>
+                <button onclick="switchPage('docs')" id="nav-docs" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition cursor-pointer text-slate-400 hover:text-white hover:bg-slate-800/40">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9l-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                    Dokumenty &amp; Limity
+                </button>
+            </nav>
+        </div>
+
+        <div class="mt-8 pt-4 border-t border-slate-800/80 hidden lg:block">
+            <div class="flex items-center gap-2 text-xs text-slate-400">
+                <span class="w-2 h-2 rounded-full skoda-green-bg animate-pulse"></span>
+                <span>Propojeno • Systémy aktivní</span>
+            </div>
+        </div>
+    </aside>
+
+    <div class="flex-1 lg:pl-64 min-h-screen flex flex-col">
+        
+        <div class="w-full px-6 lg:px-10 py-5 border-b border-slate-800/40 bg-[#0d1117]/60 backdrop-blur-md flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 z-40">
+            <div class="text-sm font-bold tracking-tight text-slate-300">Škoda Fabia II <span class="font-mono text-xs text-slate-500 font-normal ml-2">8M4 3655</span></div>
+            <div class="glass-card px-4 py-1.5 rounded-xl text-xs flex items-center gap-3">
+                <span class="text-slate-500 font-mono">VIN:</span>
+                <span id="vin-text" class="font-mono text-white font-bold tracking-wider">TMBJJ65J5B2045295</span>
+                <button onclick="copyVIN()" class="text-emerald-400 hover:text-emerald-300 font-bold cursor-pointer border border-emerald-500/20 px-2 py-0.5 rounded bg-emerald-500/5">Kopírovat</button>
+            </div>
+        </div>
+
+        <div class="p-6 lg:p-10 flex-1 space-y-8">
+
+            <section id="page-dashboard" class="space-y-6 page-content">
+                
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                    
+                    <div class="xl:col-span-2 relative rounded-3xl overflow-hidden glass-card h-80 xl:h-96 group flex flex-col justify-between p-8 skoda-glow">
+                        <div class="absolute inset-0 z-0">
+                            <img src="skobg2.PNG" alt="MyFabia Base" class="w-full h-full object-cover opacity-30 transform group-hover:scale-102 transition duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-r from-[#0d1117] via-transparent to-transparent"></div>
+                        </div>
+                        
+                        <div class="z-10">
+                            <div class="flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-xl w-fit">
+                                <span class="w-2 h-2 rounded-full skoda-green-bg animate-ping"></span>
+                                <span class="text-xs font-bold text-emerald-400 tracking-wide">Vše v pořádku</span>
+                            </div>
+                            <h2 class="text-3xl xl:text-4xl font-extrabold text-white mt-5 tracking-tight">Žádné závady</h2>
+                            <p class="text-slate-400 text-xs xl:text-sm mt-1.5 max-w-sm leading-relaxed">Všechny sledované hardwarové subsystémy a provozní kapaliny vykazují optimální hodnoty.</p>
+                        </div>
+
+                        <div class="z-10 flex items-center gap-4 font-mono text-xs text-slate-400 bg-slate-900/50 backdrop-blur-md p-3 rounded-xl border border-slate-800/60 w-fit">
+                            <div>Kód: <span class="text-white font-bold">ACCAYBX01</span></div>
+                            <div class="w-px h-3 bg-slate-800"></div>
+                            <div>Barva: <span class="text-white font-bold">9202</span></div>
+                        </div>
+                    </div>
+
+                    <div class="xl:col-span-1 grid grid-cols-2 xl:grid-cols-1 gap-4">
+                        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between">
+                            <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Celkový nájezd</p>
+                            <p class="text-3xl font-extrabold text-white mt-2">245 500 <span class="text-xs font-normal text-slate-500 tracking-normal">km</span></p>
+                        </div>
+                        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between border-l-2 border-emerald-500/40">
+                            <p class="text-xs uppercase tracking-wider text-slate-400 font-medium">Technická kontrola (STK)</p>
+                            <p class="text-3xl font-extrabold text-emerald-400 mt-2">
+                                <span id="stk-months">--</span> <span class="text-xs font-normal text-slate-500 tracking-normal">měsíců</span>
+                            </p>
+                            <p class="text-[10px] text-slate-500 font-mono mt-1">Platnost do: Únor 2028</p>
+                        </div>
+                        <div class="glass-card p-5 rounded-2xl flex flex-col justify-between border-l-2 border-amber-500/40">
+                            <p class="text-xs uppercase tracking-wider text-slate-400 font-medium">Výměna oleje</p>
+                            <p class="text-3xl font-extrabold text-amber-400 mt-2">4 500 <span class="text-xs font-normal text-slate-500 tracking-normal">km</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
+                    <div class="xl:col-span-2 glass-card p-6 rounded-2xl flex flex-col justify-between min-h-[480px]">
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-1">Interaktivní Schéma Vozidla</h3>
+                            <p class="text-xs text-slate-400">Kliknutím na bod nebo legendu níže zobrazíš technická data a stav dílu.</p>
+                        </div>
+
+                        <div class="relative w-full max-w-2xl mx-auto my-auto aspect-[21/9] flex items-center justify-center p-4">
+                            <img src="obrys.png" alt="Obrys vozidla" class="w-full h-full object-contain select-none max-h-[260px]">
+
+                            <button onclick="selectOverviewZone('motor')" class="absolute left-[16%] top-[10%] w-8 h-8 rounded-full bg-slate-900 border-2 border-emerald-400 flex items-center justify-center text-xs font-mono font-bold text-white hover:bg-emerald-500 hover:border-white transition shadow-lg cursor-pointer z-10">1</button>
+                            <button onclick="selectOverviewZone('kola')" class="absolute left-[27%] bottom-[2%] w-8 h-8 rounded-full bg-slate-900 border-2 border-emerald-400 flex items-center justify-center text-xs font-mono font-bold text-white hover:bg-emerald-500 hover:border-white transition shadow-lg cursor-pointer z-10">2</button>
+                            <button onclick="selectOverviewZone('brzdy')" class="absolute left-[61%] bottom-[2%] w-8 h-8 rounded-full bg-slate-900 border-2 border-emerald-400 flex items-center justify-center text-xs font-mono font-bold text-white hover:bg-emerald-500 hover:border-white transition shadow-lg cursor-pointer z-10">3</button>
+                            <button onclick="selectOverviewZone('vyfuk')" class="absolute right-[9%] top-[14%] w-8 h-8 rounded-full bg-slate-900 border-2 border-emerald-400 flex items-center justify-center text-xs font-mono font-bold text-white hover:bg-emerald-500 hover:border-white transition shadow-lg cursor-pointer z-10">4</button>
+                        </div>
+
+                        <div class="mt-6 pt-4 border-t border-slate-800/60">
+                            <p class="text-[10px] font-mono tracking-widest text-slate-500 font-bold uppercase mb-3">Legenda komponentů</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                <button onclick="selectOverviewZone('motor')" id="btn-leg-motor" class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-900/40 border border-slate-800 text-left text-xs text-slate-300 hover:border-emerald-500/40 transition cursor-pointer">
+                                    <span class="font-mono text-emerald-400 font-bold">1.</span> Motorová jednotka
+                                </button>
+                                <button onclick="selectOverviewZone('kola')" id="btn-leg-kola" class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-900/40 border border-slate-800 text-left text-xs text-slate-300 hover:border-emerald-500/40 transition cursor-pointer">
+                                    <span class="font-mono text-emerald-400 font-bold">2.</span> Kola &amp; Pneumatiky
+                                </button>
+                                <button onclick="selectOverviewZone('brzdy')" id="btn-leg-brzdy" class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-900/40 border border-slate-800 text-left text-xs text-slate-300 hover:border-emerald-500/40 transition cursor-pointer">
+                                    <span class="font-mono text-emerald-400 font-bold">3.</span> Brzdový systém
+                                </button>
+                                <button onclick="selectOverviewZone('vyfuk')" id="btn-leg-vyfuk" class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-900/40 border border-slate-800 text-left text-xs text-slate-300 hover:border-emerald-500/40 transition cursor-pointer">
+                                    <span class="font-mono text-emerald-400 font-bold">4.</span> Výfukový segment
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="xl:col-span-1 glass-card p-6 rounded-2xl flex flex-col justify-between border-t border-emerald-500/20" id="overview-detail-card">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="w-2 h-2 rounded-full skoda-green-bg animate-pulse"></span>
+                                <span class="text-[9px] text-slate-400 font-mono uppercase font-bold tracking-wider">Telemetrický detail</span>
+                            </div>
+                            <h4 id="overview-title" class="text-xl font-black text-white mt-4">Zvolte komponent</h4>
+                            <p id="overview-desc" class="text-xs text-slate-400 mt-2 leading-relaxed">Kliknutím na jakékoli číslo v nákresu auta nebo položku v legendě vyvoláte okamžitý výpis aktuálního stavu z digitální garáže.</p>
+                            
+                            <div id="overview-specs-box" class="mt-5 space-y-2 hidden">
+                            </div>
+                        </div>
+                        <div id="overview-meta" class="mt-6 pt-4 border-t border-slate-800/60 text-[10px] font-mono text-slate-500">Řídicí jednotka: Připravena k diagnostice</div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="page-analytics" class="space-y-6 page-content hidden">
+                <div class="glass-card p-6 rounded-2xl">
+                    <h3 class="text-lg font-bold text-white mb-1">Vývoj kilometrů</h3>
+                    <div class="h-64 w-full mt-4">
+                        <canvas id="pageKmChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="glass-card p-6 rounded-2xl">
+                        <h3 class="text-lg font-bold text-white mb-4">Struktura investic</h3>
+                        <div class="h-52 flex justify-center items-center">
+                            <canvas id="costChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="glass-card p-6 rounded-2xl flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-lg font-bold text-white mb-4">Rekordy</h3>
+                            <div class="space-y-2 text-xs font-mono">
+                                <div class="flex justify-between py-2 border-b border-slate-800/40"><span class="text-slate-400">Nejdelší trasa</span><span class="text-white font-bold">1 150 km</span></div>
+                                <div class="flex justify-between py-2 border-b border-slate-800/40"><span class="text-slate-400">Měsíční průměr</span><span class="text-white font-bold">1 350 km</span></div>
+                                <div class="flex justify-between py-2"><span class="text-emerald-400">Rekordní spotřeba</span><span class="text-emerald-400 font-bold">3.9 l/100km</span></div>
+                            </div>
+                        </div>
+                        <div class="space-y-2 font-mono text-xs text-slate-400 mt-4">
+                            <div class="flex justify-between border-b border-slate-800/40 pb-1.5">
+                                <span>Město:</span><span class="text-white font-bold">5.4 l</span>
+                            </div>
+                            <div class="flex justify-between border-b border-slate-800/40 pb-1.5">
+                                <span>Dálnice:</span><span class="text-white font-bold">5.1 l</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Mimo město:</span><span class="text-white font-bold">4.2 l</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="page-service" class="grid grid-cols-1 xl:grid-cols-3 gap-6 page-content hidden">
+                <div class="xl:col-span-2 space-y-4">
+                    <h3 class="text-xl font-bold text-white mb-2 px-1">Digitální servisní kniha</h3>
+                    
+                    <div class="glass-card rounded-2xl overflow-hidden border border-slate-800/60">
+                        <button onclick="toggleAccordion('acc-motor')" class="w-full flex justify-between items-center p-5 text-left font-semibold text-white hover:bg-slate-800/20 transition cursor-pointer">
+                            <div class="flex items-center gap-3">
+                                <span class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 text-xs">🛠️</span>
+                                <div>
+                                    <p class="text-sm font-bold">Motorová oblast &amp; náplně</p>
+                                    <p class="text-[11px] text-slate-400 font-normal">Informace o motoru, výměny oleje a kapalin</p>
+                                </div>
+                            </div>
+                            <span id="acc-motor-icon" class="text-xs text-slate-500 transition duration-300">▼</span>
+                        </button>
+                        
+                        <div id="acc-motor" class="hidden p-5 bg-slate-900/20 border-t border-slate-800/40 space-y-5">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-950/40 p-4 rounded-xl border border-slate-800/60 font-mono text-xs">
+                                <div class="space-y-2">
+                                    <p class="text-slate-500 uppercase text-[10px] font-bold tracking-wider">Specifikace agregátu</p>
+                                    <p class="text-slate-300">Typ motoru: <span class="text-white font-bold">1.6 TDI CR (EA189)</span></p>
+                                    <p class="text-slate-300">Kód motoru: <span class="text-white font-bold">CAYB</span></p>
+                                    <p class="text-slate-300">Vstřikování: <span class="text-white font-bold">Common-Rail</span></p>
+                                </div>
+                                <div class="space-y-2">
+                                    <p class="text-slate-500 uppercase text-[10px] font-bold tracking-wider">Provozní kapaliny</p>
+                                    <p class="text-emerald-400">Aktuální olej: <span class="text-white font-bold">Castrol EDGE 5W-30 LL</span></p>
+                                    <p class="text-slate-300">Norma VW: <span class="text-white font-bold">VW 507 00 (pro DPF)</span></p>
+                                    <p class="text-slate-300">Chladicí kap.: <span class="text-white font-bold">G12++ / G13</span></p>
+                                </div>
+                            </div>
+                            <div class="relative border-l border-slate-800 ml-3 space-y-4 text-xs">
+                                <div class="relative pl-6">
+                                    <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full skoda-green-bg"></div>
+                                    <p class="text-slate-500 font-mono">15. 05. 2026 • 181 200 km</p>
+                                    <h4 class="text-white font-bold mt-0.5">Výměna motorového oleje</h4>
+                                    <p class="text-slate-400 mt-1">Vypuštěn starý olej, proveden proplach, aplikován Castrol EDGE 5W-30 včetně těsnění vany. Objem náplně: 4.3 litru.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="glass-card rounded-2xl overflow-hidden border border-slate-800/60">
+                        <button onclick="toggleAccordion('acc-filters')" class="w-full flex justify-between items-center p-5 text-left font-semibold text-white hover:bg-slate-800/20 transition cursor-pointer">
+                            <div class="flex items-center gap-3">
+                                <span class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 text-xs">💨</span>
+                                <div>
+                                    <p class="text-sm font-bold">Filtrační segmenty</p>
+                                    <p class="text-[11px] text-slate-400 font-normal">Palivový, olejový, vzduchový a kabinový filtr</p>
+                                </div>
+                            </div>
+                            <span id="acc-filters-icon" class="text-xs text-slate-500 transition duration-300">▼</span>
+                        </button>
+                        
+                        <div id="acc-filters" class="hidden p-5 bg-slate-900/20 border-t border-slate-800/40 space-y-4 text-xs relative border-l border-slate-800 ml-3">
+                            <div class="relative pl-6">
+                                <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full skoda-green-bg"></div>
+                                <p class="text-slate-500 font-mono">15. 05. 2026 • 181 200 km</p>
+                                <h4 class="text-white font-bold mt-0.5">Kompletní výměna filtrů (Sada Mann)</h4>
+                                <ul class="list-disc pl-4 text-slate-400 mt-1.5 space-y-1">
+                                    <li><span class="text-white">Olejový filtr:</span> Mann-Filter HU 7008 z</li>
+                                    <li><span class="text-white">Palivový filtr:</span> Mann-Filter WK 6003</li>
+                                    <li><span class="text-white">Vzduchový filtr:</span> Mann-Filter C 3880</li>
+                                    <li><span class="text-white">Kabinový filtr:</span> Mann-Filter s aktivním uhlím</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-bold text-white pt-4 mb-2 px-1">Ostatní servis</h3>
+
+                    <div class="glass-card rounded-2xl overflow-hidden border border-slate-800/60">
+                        <button onclick="toggleAccordion('acc-other')" class="w-full flex justify-between items-center p-5 text-left font-semibold text-white hover:bg-slate-800/20 transition cursor-pointer">
+                            <div class="flex items-center gap-3">
+                                <span class="p-2 rounded-lg bg-emerald-500/10 text-emerald-400 text-xs">💡</span>
+                                <div>
+                                    <p class="text-sm font-bold">Osvětlení &amp; Elektroinstalace</p>
+                                    <p class="text-[11px] text-slate-400 font-normal">Výměna žárovek, kontrola baterie a palubní sítě</p>
+                                </div>
+                            </div>
+                            <span id="acc-other-icon" class="text-xs text-slate-500 transition duration-300">▼</span>
+                        </button>
+                        
+                        <div id="acc-other" class="hidden p-5 bg-slate-900/20 border-t border-slate-800/40 space-y-5">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-950/40 p-4 rounded-xl border border-slate-800/60 font-mono text-xs">
+                                <div class="space-y-2">
+                                    <p class="text-slate-500 uppercase text-[10px] font-bold tracking-wider">Specifikace osazení</p>
+                                    <p class="text-slate-300">Hlavní světlomety: <span class="text-white font-bold">H7 / H7 (Projektorové)</span></p>
+                                    <p class="text-slate-300">Obrysová světla: <span class="text-white font-bold">W5W</span></p>
+                                    <p class="text-slate-300">Zadní kombinovaná: <span class="text-white font-bold">P21W / R5W</span></p>
+                                </div>
+                                <div class="space-y-2">
+                                    <p class="text-slate-500 uppercase text-[10px] font-bold tracking-wider">Elektro telemetrie</p>
+                                    <p class="text-emerald-400">Napětí akumulátoru: <span class="text-white font-bold">12.6 V (Klidové)</span></p>
+                                    <p class="text-slate-300">Alternátor (dobíjení): <span class="text-white font-bold">14.2 V (Při zátěži)</span></p>
+                                    <p class="text-slate-300">Pojistkové skříně: <span class="text-white font-bold">Bezvadný stav</span></p>
+                                </div>
+                            </div>
+                            <div class="relative border-l border-slate-800 ml-3 space-y-4 text-xs">
+                                <div class="relative pl-6">
+                                    <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full skoda-green-bg"></div>
+                                    <p class="text-slate-500 font-mono">18. 06. 2026 • 182 100 km</p>
+                                    <h4 class="text-white font-bold mt-0.5">Výměna žárovek potkávacích světel</h4>
+                                    <p class="text-slate-400 mt-1">Z důvodu prasklé halogenové žárovky na levé přední straně byla provedena párová výměna hlavních tlumených světel. Použity žárovky <span class="text-white">Osram Night Breaker Silver H7</span> pro vyšší svítivost. Zároveň proběhlo vyčištění kontaktů patice.</p>
+                                </div>
+                                <div class="relative pl-6">
+                                    <div class="absolute -left-1.5 top-1.5 w-3 h-3 rounded-full skoda-green-bg"></div>
+                                    <p class="text-slate-500 font-mono">11. 06. 2026 • 180 900 km</p>
+                                    <h4 class="text-white font-bold mt-0.5">Zátěžový test baterie &amp; diagnostika sítě</h4>
+                                    <p class="text-slate-400 mt-1">Před uvedením do plného provozu v ČR proveden kontrolní test kapacity autobaterie Exide 61Ah. Výsledek testu: Životnost 88 %, startovací proud v normě, paměť závad řídicí jednotky sítě (BCM) bez chybových hlášení.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="page-specs" class="space-y-6 page-content hidden">
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
+                        <div>
+                            <h3 class="text-xl font-bold text-white">Oficiální specifikace vu</h3>
+                            <p class="text-xs text-slate-500 font-mono mt-0.5">Kompletní data odpovídající schválenému osvědčení o registraci vozidla.</p>
+                        </div>
+                        <span class="text-[10px] bg-slate-800 text-slate-400 font-mono px-2.5 py-1 rounded-md border border-slate-700">Status: PROVOZOVANÉ</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 xl:grid-cols-2 gap-8 text-xs font-mono">
+                        <div class="space-y-1">
+                            <h4 class="text-emerald-400 font-sans font-bold text-sm uppercase tracking-wider mb-3 border-b border-slate-800/60 pb-1">Základní identifikace</h4>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Tovární značka</span><span class="text-white font-bold">ŠKODA</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Obchodní označení</span><span class="text-white font-bold">FABIA</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Typ / Varianta</span><span class="text-white">5J / ACCAYBX01</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-white">Verze</span><span class="text-white">NFM5FM52R02914N</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Druh vozidla / Kategorie</span><span class="text-white">OSOBNÍ AUTOMOBIL / M1</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Karoserie</span><span class="text-white">AC KOMBI (Osobní kombi)</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Datum 1. registrace</span><span class="text-white">24.06.2010</span></div>
+                            <div class="py-2 flex justify-between"><span class="text-slate-400">Datum 1. registrace v ČR</span><span class="text-white">11.06.2026</span></div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <h4 class="text-emerald-400 font-sans font-bold text-sm uppercase tracking-wider mb-3 border-b border-slate-800/60 pb-1">Pohonná jednotka &amp; Emise</h4>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Výrobce motoru</span><span class="text-white">VOLKSWAGEN</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Typ motoru</span><span class="text-white font-bold">CAYB</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Palivo</span><span class="text-white">NM (Nafta motorová)</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Zdvihový objem</span><span class="text-white">1 598 cm³</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Max. výkon</span><span class="text-white font-bold">66 kW při 4200 ot./min</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Emisní limit [EHK/ES]</span><span class="text-white">692/2008A</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Stupeň plnění emisí</span><span class="text-white">EURO 5</span></div>
+                            <div class="py-2 flex justify-between"><span class="text-slate-400">Korigovaný součinitel absorpce</span><span class="text-white">0.6 m⁻¹</span></div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <h4 class="text-emerald-400 font-sans font-bold text-sm uppercase tracking-wider mb-3 border-b border-slate-800/60 pb-1">Rozměry &amp; Hmotnosti</h4>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Celkové rozměry (d/š/v)</span><span class="text-white">4247 / 1642 / 1498 mm</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Rozvor</span><span class="text-white">2451 mm</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Rozchod náprav (přední/zadní)</span><span class="text-white">1417 / 1410 mm</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Provozní hmotnost</span><span class="text-white font-bold">1 224 kg</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Největší technicky přípustná hm.</span><span class="text-white">1 679 kg</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Zatížení náprav (přední/zadní)</span><span class="text-white">920 / 840 kg</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Přípojné vozidlo brzděné</span><span class="text-white">1 200 kg</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Přípojné vozidlo nebrzděné</span><span class="text-white">450 kg</span></div>
+                            <div class="py-2 flex justify-between"><span class="text-slate-400">Největší hmotnost jízdní soupravy</span><span class="text-white font-bold">2 879 kg</span></div>
+                        </div>
+
+                        <div class="space-y-1">
+                            <h4 class="text-emerald-400 font-sans font-bold text-sm uppercase tracking-wider mb-3 border-b border-slate-800/60 pb-1">Kola, pneu &amp; Provozní údaje</h4>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Základní rozměr pneu a ráfků</span><span class="text-white font-bold">185/60 R14 82T • 6J X 14 ET 37</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Vnější hluk vozidla (stojící/za jízdy)</span><span class="text-white">71 dB(A) při 2500 ot. / 69 dB(A)</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Nejvyšší rychlost</span><span class="text-white">177 km/h</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Spotřeba paliva (město/mimo/komb)</span><span class="text-white text-right">5.1 / 3.6 / 4.2 l/100km</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">CO2 emise (kombinované)</span><span class="text-white">109 g/km</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Počet náprav (z toho poháněných)</span><span class="text-white">2 (1 přední)</span></div>
+                            <div class="py-2 flex justify-between border-b border-slate-800/30"><span class="text-slate-400">Počet míst k sezení</span><span class="text-white">5</span></div>
+                            <div class="py-2 flex justify-between"><span class="text-slate-400">Oficiální barva karoserie</span><span class="text-white font-bold">ŠEDÁ</span></div>
+                        </div>
+                    </div>
+
+                    <div class="mt-8 pt-4 border-t border-slate-800/60 font-mono text-xs">
+                        <h4 class="text-emerald-400 font-sans font-bold text-sm uppercase tracking-wider mb-3">Zápis alternativních kol a pneumatik (A554)</h4>
+                        <div class="bg-slate-900/30 p-4 rounded-xl border border-slate-800 text-slate-400 leading-relaxed space-y-2">
+                            <p>Variabilní provedení vozidla schválené k provozu nad rámec základní konfigurace:</p>
+                            <ul class="list-disc pl-5 text-slate-300 space-y-1">
+                                <li><span class="text-white font-bold">6J x 15 ET43</span> s pneumatikami <span class="text-white font-bold">195/55 R15 85H</span></li>
+                                <li><span class="text-white font-bold">6.5J x 16 ET38</span> s pneumatikami <span class="text-white font-bold">205/45 R16 83H</span></li>
+                                <li><span class="text-white font-bold">6J x 15 ET43</span> s pneumatikami <span class="text-white font-bold">185/55 R15 81T M+S</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="page-gallery" class="space-y-6 page-content hidden">
+                <div class="glass-card p-6 rounded-2xl">
+                    <h3 class="text-xl font-bold text-white mb-1">Showroom &amp; Úpravy</h3>
+                    <p class="text-xs text-slate-400 mb-6">Kliknutím na fotografii zobrazíš detaily o provedené změně a tehdejším stavu tachometru.</p>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
+                        
+                        <div onclick="openLightbox('foto3.2.PNG', 'Zatmavení blinkrů na zadních světlech, černou tmavou fólií.', '245 400 km')" 
+                             class="group rounded-2xl overflow-hidden glass-card border border-slate-800/60 cursor-pointer hover:border-emerald-500/30 transition duration-300">
+                            <div class="h-52 overflow-hidden bg-slate-950 relative">
+                                <img src="foto3.2.PNG" alt="Zadní pohled" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <div class="absolute bottom-2 right-2 bg-slate-900/80 backdrop-blur-md text-[10px] font-mono font-bold text-emerald-400 px-2 py-1 rounded-md border border-slate-800">
+                                    245 400 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">8.7.2026</h4>
+                                <p class="text-xs text-slate-400 truncate mt-1">Zatmavení blinkrů</p>
+                            </div>
+                        </div>
+
+                        <div onclick="openLightbox('foto3.1.PNG', 'Nalepení černé lesklé fólie na spodek zadního nárazníku', '244 780 km')" 
+                             class="group rounded-2xl overflow-hidden glass-card border border-slate-800/60 cursor-pointer hover:border-emerald-500/30 transition duration-300">
+                            <div class="h-52 overflow-hidden bg-slate-950 relative">
+                                <img src="foto3.1.PNG" alt="Zadní pohled" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <div class="absolute bottom-2 right-2 bg-slate-900/80 backdrop-blur-md text-[10px] font-mono font-bold text-emerald-400 px-2 py-1 rounded-md border border-slate-800">
+                                    244 780 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">29.6.2026</h4>
+                                <p class="text-xs text-slate-400 truncate mt-1">Nalepení černé fólie</p>
+                            </div>
+                        </div>
+
+                        <div onclick="openLightbox('foto3.0.PNG', 'Výměna halogenového osvětlení SPZ za LED.', '244 780 km')" 
+                             class="group rounded-2xl overflow-hidden glass-card border border-slate-800/60 cursor-pointer hover:border-emerald-500/30 transition duration-300">
+                            <div class="h-52 overflow-hidden bg-slate-950 relative">
+                                <img src="foto3.0.PNG" alt="Zadní pohled" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <div class="absolute bottom-2 right-2 bg-slate-900/80 backdrop-blur-md text-[10px] font-mono font-bold text-emerald-400 px-2 py-1 rounded-md border border-slate-800">
+                                    244 780 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">29.6.2026</h4>
+                                <p class="text-xs text-slate-400 truncate mt-1">Výměna LED osvětlení SPZ</p>
+                            </div>
+                        </div>
+
+                        <div onclick="openLightbox('foto4.0.PNG', 'Výměna halogenové žárovky obrysového světla za LED', '244 700 km')" 
+                             class="group rounded-2xl overflow-hidden glass-card border border-slate-800/60 cursor-pointer hover:border-emerald-500/30 transition duration-300">
+                            <div class="h-52 overflow-hidden bg-slate-950 relative">
+                                <img src="foto4.0.PNG" alt="Zadní pohled" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <div class="absolute bottom-2 right-2 bg-slate-900/80 backdrop-blur-md text-[10px] font-mono font-bold text-emerald-400 px-2 py-1 rounded-md border border-slate-800">
+                                    244 700 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">26.6.2026</h4>
+                                <p class="text-xs text-slate-400 truncate mt-1">Výměna LED osvětlení obrysovek</p>
+                            </div>
+                        </div>
+
+                        <div onclick="openLightbox('foto2.1.PNG', 'Pořízení vozidla, dovoz z Německa. Míkovice, foto před prvotním očištěním laku.', '243 000 km')" 
+                             class="group rounded-2xl overflow-hidden glass-card border border-slate-800/60 cursor-pointer hover:border-emerald-500/30 transition duration-300">
+                            <div class="h-52 overflow-hidden bg-slate-950 relative">
+                                <img src="foto2.1.PNG" alt="Zadní pohled" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <div class="absolute bottom-2 right-2 bg-slate-900/80 backdrop-blur-md text-[10px] font-mono font-bold text-emerald-400 px-2 py-1 rounded-md border border-slate-800">
+                                    243 000 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">18.6.2026</h4>
+                                <p class="text-xs text-slate-400 truncate mt-1">Nákup nových kol</p>
+                            </div>
+                        </div>
+
+                        <div onclick="openLightbox('foto2.0.jpg', 'Provní důkladné čištění laku.', '243 100 km')" 
+                             class="group rounded-2xl overflow-hidden glass-card border border-slate-800/60 cursor-pointer hover:border-emerald-500/30 transition duration-300">
+                            <div class="h-52 overflow-hidden bg-slate-950 relative">
+                                <img src="foto2.0.jpg" alt="Zadní pohled" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <div class="absolute bottom-2 right-2 bg-slate-900/80 backdrop-blur-md text-[10px] font-mono font-bold text-emerald-400 px-2 py-1 rounded-md border border-slate-800">
+                                    243 100 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">15.6.2026</h4>
+                                <p class="text-xs text-slate-400 truncate mt-1">Prvotní čištění</p>
+                            </div>
+                        </div>
+
+                        <div onclick="openLightbox('foto1.png', 'Pořízení vozidla, dovoz z Německa. Míkovice, foto před prvotním očištěním laku.', '243 000 km')" 
+                             class="group rounded-2xl overflow-hidden glass-card border border-slate-800/60 cursor-pointer hover:border-emerald-500/30 transition duration-300">
+                            <div class="h-52 overflow-hidden bg-slate-950 relative">
+                                <img src="foto1.PNG" alt="Přední pohled" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <div class="absolute bottom-2 right-2 bg-slate-900/80 backdrop-blur-md text-[10px] font-mono font-bold text-emerald-400 px-2 py-1 rounded-md border border-slate-800">
+                                    243 000 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">14.6.2026</h4>
+                                <p class="text-xs text-slate-400 truncate mt-1">Pořízení vozidla, dovoz z Německa...</p>
+                            </div>
+                        </div>
+
+                        <div onclick="openLightbox('foto1.1.png', 'Pořízení vozidla, dovoz z Německa. Míkovice, foto před prvotním očištěním laku.', '243 000 km')" 
+                             class="group rounded-2xl overflow-hidden glass-card border border-slate-800/60 cursor-pointer hover:border-emerald-500/30 transition duration-300">
+                            <div class="h-52 overflow-hidden bg-slate-950 relative">
+                                <img src="foto1.1.PNG" alt="Zadní pohled" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                <div class="absolute bottom-2 right-2 bg-slate-900/80 backdrop-blur-md text-[10px] font-mono font-bold text-emerald-400 px-2 py-1 rounded-md border border-slate-800">
+                                    243 000 km
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="text-sm font-bold text-white group-hover:text-emerald-400 transition">14.6.2026</h4>
+                                <p class="text-xs text-slate-400 truncate mt-1">Pořízení vozidla, dovoz z Německa...</p>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </section>
+
+            <div id="gallery-lightbox" class="fixed inset-0 bg-[#0d1117]/90 backdrop-blur-lg hidden items-center justify-center p-4 z-50 transition duration-300">
+    <div class="glass-card max-w-4xl w-full rounded-3xl overflow-hidden flex flex-col md:flex-row shadow-2xl border border-slate-800">
+        
+        <div class="w-full md:w-2/3 bg-slate-950 flex items-center justify-center p-4">
+            <img id="lightbox-img" src="" alt="Detail" class="max-w-full max-h-[80vh] md:max-h-[85vh] object-contain rounded-lg">
+        </div>
+
+        <div class="w-full md:w-1/3 p-6 flex flex-col justify-between bg-slate-900/40 border-t md:border-t-0 md:border-l border-slate-800/60">
+            <div class="space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-mono uppercase tracking-wider text-emerald-400 font-bold bg-emerald-500/10 px-2 py-1 rounded-md">Detail úpravy</span>
+                    <button onclick="closeLightbox()" class="text-slate-400 hover:text-white text-xl cursor-pointer font-bold transition">&times;</button>
+                </div>
+                
+                <div>
+                    <p class="text-xs text-slate-500 font-mono font-bold uppercase tracking-wide">Popis / Specifikace:</p>
+                    <p id="lightbox-desc" class="text-sm text-slate-200 mt-1.5 leading-relaxed font-medium">Popisek změny</p>
+                </div>
+            </div>
+
+            <div class="mt-8 pt-4 border-t border-slate-800/60">
+                <p class="text-xs text-slate-500 font-mono font-bold uppercase tracking-wide">Kategorie:</p>
+                <p id="lightbox-km" class="text-xl font-black text-white font-mono mt-0.5">0 km</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <section id="page-docs" class="grid grid-cols-1 md:grid-cols-2 gap-6 page-content hidden">
+    <div class="glass-card p-5 rounded-xl flex flex-col justify-between h-40">
+        <div>
+            <h4 class="font-bold text-white text-sm">Pojistná smlouva vozidla</h4>
+            <p class="text-xs text-slate-400 mt-1">Část 1/2</p>
+        </div>
+        <button onclick="openLightbox('pojistna_smlouva1.PNG', 'První část pojistné smlouvy vozidla. Datum splatnosti 11.6.2026', 'Dokumenty')" class="w-full py-2 bg-slate-800/60 hover:bg-slate-800 rounded border border-slate-700 text-xs text-white font-medium cursor-pointer transition">Zobrazit dokument</button>
+    </div>
+
+    <div class="glass-card p-5 rounded-xl flex flex-col justify-between h-40">
+        <div>
+            <h4 class="font-bold text-white text-sm">Pojistná smlouva vozidla</h4>
+            <p class="text-xs text-slate-400 mt-1">Část 2/2</p>
+        </div>
+        <button onclick="openLightbox('pojistna_smlouva2.PNG', 'Druhá část pojistné smlouvy vozidla. Datum splatnosti 11.6.2026', 'Dokumenty')" class="w-full py-2 bg-slate-800/60 hover:bg-slate-800 rounded border border-slate-700 text-xs text-white font-medium cursor-pointer transition">Zobrazit dokument</button>
+    </div>
+    
+    <div class="glass-card p-5 rounded-xl flex flex-col justify-between h-40">
+        <div>
+            <h4 class="font-bold text-white text-sm">Protokol o měření emisí vozidla</h4>
+            <p class="text-xs text-slate-400 mt-1">EMISE</p>
+        </div>
+        <button onclick="openLightbox('stk2.PNG', 'Protokol o měření emisí vozidla - Emise byly změřeny dne 12.2.2026', 'Dokumenty')" class="w-full py-2 bg-slate-800/60 hover:bg-slate-800 rounded border border-slate-700 text-xs text-white font-medium cursor-pointer transition">Zobrazit dokument</button>
+    </div>
+
+    <div class="glass-card p-5 rounded-xl flex flex-col justify-between h-40">
+        <div>
+            <h4 class="font-bold text-white text-sm">Protokol o provedení technické kontroly vozidla</h4>
+            <p class="text-xs text-slate-400 mt-1">STK</p>
+        </div>
+        <button onclick="openLightbox('stk1.PNG', 'Protokol o provedení techhnické kontroly vozidla - Prohlídka byla provedena dne 13.2.2026', 'Dokumenty')" class="w-full py-2 bg-slate-800/60 hover:bg-slate-800 rounded border border-slate-700 text-xs text-white font-medium cursor-pointer transition">Zobrazit dokument</button>
+    </div>
+    
+    <div class="glass-card p-5 rounded-xl flex flex-col justify-between h-40">
+        <div>
+            <h4 class="font-bold text-white text-sm">Kupní smlouva vozidla</h4>
+            <p class="text-xs text-slate-400 mt-1">Část 1/2</p>
+        </div>
+        <button onclick="openLightbox('smlouva1.PNG', 'První část kupní smlouvy vozidla', 'Dokumenty')" class="w-full py-2 bg-slate-800/60 hover:bg-slate-800 rounded border border-slate-700 text-xs text-white font-medium cursor-pointer transition">Zobrazit dokument</button>
+    </div>
+
+    <div class="glass-card p-5 rounded-xl flex flex-col justify-between h-40">
+        <div>
+            <h4 class="font-bold text-white text-sm">Kupní smlouva vozidla</h4>
+            <p class="text-xs text-slate-400 mt-1">Část 2/2</p>
+        </div>
+        <button onclick="openLightbox('smlouva2.PNG', 'Druhá část kupní smlouvy vozidla', 'Dokumenty')" class="w-full py-2 bg-slate-800/60 hover:bg-slate-800 rounded border border-slate-700 text-xs text-white font-medium cursor-pointer transition">Zobrazit dokument</button>
+    </div>
+    
+    <div class="glass-card p-5 rounded-xl flex flex-col justify-between h-40">
+        <div>
+            <h4 class="font-bold text-white text-sm">Zelená Karta</h4>
+            <p class="text-xs text-slate-400 mt-1">Povinné ručení.</p>
+        </div>
+        <button onclick="openLightbox('zelena_karta.PNG', 'Platný doklad o pojištění odpovědnosti z provozu vozidla (Zelená karta)', 'Dokumenty')" class="w-full py-2 bg-slate-800/60 hover:bg-slate-800 rounded border border-slate-700 text-xs text-white font-medium cursor-pointer transition">Zobrazit kartu</button>
+    </div>
+</section>
+
+        </div>
+    </div>
+
+    <script>
+        function copyVIN() {
+            const text = document.getElementById('vin-text').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('VIN byl zkopírován do schránky.');
+            });
+        }
+
+        function switchPage(pageId) {
+            document.querySelectorAll('.page-content').forEach(page => page.classList.add('hidden'));
+            document.getElementById('page-' + pageId).classList.remove('hidden');
+
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition cursor-pointer text-slate-400 hover:text-white hover:bg-slate-800/40";
+                const svg = btn.querySelector('svg');
+                if(svg) svg.classList.remove('text-emerald-400');
+            });
+            const activeBtn = document.getElementById('nav-' + pageId);
+            activeBtn.className = "w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition cursor-pointer text-white bg-emerald-500/10 border border-emerald-500/20 shadow-lg";
+            
+            const activeSvg = activeBtn.querySelector('svg');
+            if(activeSvg) activeSvg.classList.add('text-emerald-400');
+        }
+
+        function toggleAccordion(id) {
+            const element = document.getElementById(id);
+            const icon = document.getElementById(id + '-icon');
+            
+            if (element.classList.contains('hidden')) {
+                element.classList.remove('hidden');
+                icon.innerText = '▲';
+                icon.classList.add('text-emerald-400');
+            } else {
+                element.classList.add('hidden');
+                icon.innerText = '▼';
+                icon.classList.remove('text-emerald-400');
+            }
+        }
+
+        /* FUNKCE PRO LIGHTBOX (SHOWROOM) */
+        function openLightbox(imgSrc, description, mileage) {
+            const lightbox = document.getElementById('gallery-lightbox');
+            document.getElementById('lightbox-img').src = imgSrc;
+            document.getElementById('lightbox-desc').innerText = description;
+            document.getElementById('lightbox-km').innerText = mileage;
+            
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+        }
+
+        function closeLightbox() {
+            const lightbox = document.getElementById('gallery-lightbox');
+            lightbox.classList.add('hidden');
+            lightbox.classList.remove('flex');
+        }
+
+        document.getElementById('gallery-lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+
+        // --- DATA PRO INTERAKTIVNÍ SCHÉMA ---
+        const overviewZones = {
+            motor: {
+                title: "1. Motorová Jednotka (EA189)",
+                desc: "Spolehlivý vznětový čtyřválec Common-Rail s nízkou spotřebou a stabilním tlakem na vstřikovací liště.",
+                meta: "Stav: Excelentní • Žádné chyby",
+                specs: [
+                    { label: "Kód motoru", value: "CAYB (1.6 TDI CR)" },
+                    { label: "Výkon agregátu", value: "66 kW (90 HP)" },
+                    { label: "Motorový olej", value: "Castrol EDGE 5W-30 LL" },
+                    { label: "Interval výměny", value: "Zbývá 4 500 km" }
+                ]
+            },
+            kola: {
+                title: "2. Kola & Pneumatiky",
+                desc: "Kompletní parametry aktuálně nasazených ráfků a plášťů včetně hloubky dezénu sledované digitálním garážovým čipem.",
+                meta: "Tlak: 2.2 bar • Geometrie OK",
+                specs: [
+                    { label: "Rozměr ráfků", value: "6J X 14 ET 37 (Základní)" },
+                    { label: "Rozměr pneu: Aktuálně :", value: "205/45 R16 83W" },
+                    { label: "Typ pneumatik", value: "Letní" },
+                    { label: "Rozměr pneu: Alternativum :", value: "CHYBÍ" },
+                    { label: "Typ pneumatik", value: "Zimní" },
+                ]
+            },
+            brzdy: {
+                title: "3. Brzdový systém",
+                desc: "Kombinovaná brzdová soustava optimalizovaná pro dlouhou životnost komponentů a stabilní brzdný účinek.",
+                meta: "Kapalina: ATE DOT 4 • Bod varu v normě",
+                specs: [
+                    { label: "Přední náprava", value: "Kotoučové" },
+                    { label: "Zadní náprava", value: "Kotoučové" },
+                    { label: "Stav obložení", value: "Pravé zadní kolo nebrzdí" },
+                    { label: "ABS/ESP čidla", value: "Plně funkční (CAN-BUS)" }
+                ]
+            },
+            vyfuk: {
+                title: "4. Výfukový segment & DPF",
+                desc: "Emisní systém s plnou integrací filtru pevných částic plnící emisní normu EURO 5 bez aditiv.",
+                meta: "Saturace DPF: 14 % • Regenerace v pořádku",
+                specs: [
+                    { label: "Emisní norma", value: "EURO 5 (Limity 692/2008A)" },
+                    { label: "Filtr pevných částic", value: "Integrovaný DPF" },
+                    { label: "Katalyzátor", value: "Třícestný oxidační" },
+                    { label: "Těsnost potrubí", value: "100% bez koroze" }
+                ]
+            }
+        };
+
+        function selectOverviewZone(zoneKey) {
+            const data = overviewZones[zoneKey];
+            const card = document.getElementById('overview-detail-card');
+            
+            document.getElementById('overview-title').innerText = data.title;
+            document.getElementById('overview-desc').innerText = data.desc;
+            document.getElementById('overview-meta').innerText = "Diagnostika: " + data.meta;
+            
+            const box = document.getElementById('overview-specs-box');
+            box.innerHTML = '';
+            data.specs.forEach(item => {
+                box.innerHTML += `
+                    <div class="flex justify-between py-2 border-b border-slate-800/40 font-mono text-xs">
+                        <span class="text-slate-400">${item.label}</span>
+                        <span class="text-white font-bold">${item.value}</span>
+                    </div>`;
+            });
+            box.classList.remove('hidden');
+
+            document.querySelectorAll('[id^="btn-leg-"]').forEach(btn => {
+                btn.className = "flex items-center gap-2 p-2.5 rounded-xl bg-slate-900/40 border border-slate-800 text-left text-xs text-slate-300 hover:border-emerald-500/40 transition cursor-pointer";
+            });
+            const activeLeg = document.getElementById('btn-leg-' + zoneKey);
+            if (activeLeg) activeLeg.className = "flex items-center gap-2 p-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-left text-xs text-white font-semibold shadow-md transition cursor-pointer";
+
+            card.style.opacity = '0.4';
+            setTimeout(() => card.style.opacity = '1', 60);
+        }
+
+        function updateStkCountdown() {
+            const targetYear = 2028; const targetMonth = 1;
+            const now = new Date();
+            let totalMonths = (targetYear - now.getFullYear()) * 12 + (targetMonth - now.getMonth());
+            document.getElementById('stk-months').innerText = totalMonths <= 0 ? '0' : totalMonths;
+        }
+        
+        updateStkCountdown();
+        setInterval(updateStkCountdown, 86400000);
+
+        // --- CHARTJS GRAFY ---
+        const ctxKm = document.getElementById('pageKmChart').getContext('2d');
+        new Chart(ctxKm, {
+            type: 'line',
+            data: {
+                labels: ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer'],
+                datasets: [{
+                    data: [179200, 180100, 181200, 182300, 183500, 184230],
+                    borderColor: '#00b074',
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#00b074',
+                    tension: 0.3,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#64748b' } },
+                    y: { grid: { color: 'rgba(255,255,255,0.02)' }, ticks: { color: '#64748b' } }
+                }
+            }
+        });
+
+        const ctxCost = document.getElementById('costChart').getContext('2d');
+        new Chart(ctxCost, {
+            type: 'doughnut',
+            data: {
+                labels: ['Palivo', 'Servis', 'Pojištění', 'Kosmetika'],
+                datasets: [{
+                    data: [55, 30, 10, 5],
+                    backgroundColor: ['#00b074', '#1e293b', '#334155', '#475569'],
+                    borderWidth: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 11 } } } }
+            }
+        });
+
+        // Automatické načtení detailu Motoru hned při startu aplikace
+        selectOverviewZone('motor');
+    </script>
+</body>
+</html>
